@@ -39,7 +39,6 @@ gcc_source/libquadmath/math/acosq.c
 */
 
 const ld EPS = 1e-9;
-const int CORD_MAX = 1e9;
 
 template<typename T = int, typename R = ll>
 struct Point {
@@ -51,7 +50,7 @@ struct Point {
 
     R len2() const;
 
-    ld len() const;
+    [[nodiscard]] ld len() const;
 
     // rotate pi/2 to left
     Point<T, R> ort() const;
@@ -70,7 +69,7 @@ struct Point {
 
     bool operator!=(const Point<T, R> &P) const;
 
-    Point<T, R>& operator= (const Point<T, R> &P);
+    Point<T, R> &operator=(const Point<T, R> &P);
 
     // vector product
     R operator*(const Point &P) const;
@@ -97,7 +96,7 @@ R Point<T, R>::len2() const {
 
 template<typename T, typename R>
 ld Point<T, R>::len() const {
-    return (R) sqrt(*this % *this);
+    return (R) sqrtl(*this % *this);
 }
 
 template<typename T, typename R>
@@ -132,7 +131,7 @@ Point<T, R> Point<T, R>::operator/(R t) const {
 
 template<typename T, typename R>
 R Point<T, R>::operator*(const Point<T, R> &P) const {
-    return x * P.y - y * P.x;
+    return (R) x * P.y - (R) y * P.x;
 }
 
 template<typename T, typename R>
@@ -160,11 +159,11 @@ Point<T, R> &Point<T, R>::operator=(const Point<T, R> &P) {
 
 template<typename T, typename R>
 R Point<T, R>::operator%(const Point<T, R> &P) const {
-    return x * P.x + y * P.y;
+    return (R) x * P.x + (R) y * P.y;
 }
 
 template<typename T, typename R>
-bool LeftRotate(const Point<T, R>& P1, const Point<T, R>& P2) {
+bool LeftRotate(const Point<T, R> &P1, const Point<T, R> &P2) {
     return P1 * P2 > 0;
 }
 
