@@ -31,15 +31,32 @@ errors::error &errors::error::wrap(const std::string &msg) {
     return *this;
 }
 
-errors::error NewError(std::string &msg) {
+bool errors::error::operator!() const {
+    return !stack.empty();
+}
+
+errors::error errors::NewError(const std::string &msg) {
     return errors::error(msg);
 }
 
-errors::error Wrap(errors::error e, std::string &msg) {
+/// https://en.cppreference.com/w/cpp/utility/variadic
+errors::error errors::NewErrorf(const char *fmt, ...) {
+    va_list args;
+
+    /// super big buffer
+    static char buff[1 << 10];
+    sprintf(buff, fmt, args);
+
+    va_end(args);
+
+    return NewError(buff);
+}
+
+errors::error errors::Wrap(errors::error e, const std::string &msg) {
     return e.wrap(msg);
 }
 
-errors::error WitchStack(const errors::error &e1, const errors::error& e2) {
+errors::error errors::WitchStack(const errors::error &e1, const errors::error &e2) {
     errors::error e = e1;
     return e.withStack(e2);
 }

@@ -7,9 +7,10 @@
 
 #include <string>
 #include <vector>
+#include <cstdarg>
 
 namespace errors {
-    class error {
+    class [[nodiscard]] error {
     public:
         error() = default;
 
@@ -22,15 +23,21 @@ namespace errors {
         /// https://en.cppreference.com/w/cpp/language/attributes/nodiscard
         [[nodiscard]] const std::vector<std::string> &getStack() const;
 
+        bool operator!() const;
+
     private:
         std::vector<std::string> stack;
     };
 
-    error NewError(std::string &msg);
+    const error NIL;
 
-    error Wrap(error e, std::string &msg);
+    error NewError(const std::string &msg);
 
-    error WitchStack(const error &e1, const error& e2);
+    error NewErrorf(const char *fmt, ...);
+
+    error Wrap(error e, const std::string &msg);
+
+    error WitchStack(const error &e1, const error &e2);
 }
 
 #endif //GINS_ERRORS_H
