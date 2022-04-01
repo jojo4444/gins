@@ -12,8 +12,12 @@
 #include <random>
 
 #include "../primitives/point.h"
+#include "../errors/errors.h"
 
-const int MAX_POINT = 1e5;
+using err = errors::error;
+
+const int MAX_POINT = 1 << 16;
+const int CORD_MAX = 2e9;
 
 class PolygonData {
 public:
@@ -21,17 +25,17 @@ public:
 
     ~PolygonData();
 
-    bool Create();
+    err Create(int cnt = MAX_POINT);
 
-    bool Load(const std::string& file);
+    err Load(const std::string& file);
 
-    bool Save(const std::string& file) const;
+    err Save(const std::string& file) const;
 
-    bool Validation() const;
+    err Validation() const;
 
-    int GetLen() const;
+    [[nodiscard]] int GetLen() const;
 
-    const Point<int, ll> *GetData() const;
+    [[nodiscard]] const Point<int, ll> *GetData() const;
 
 private:
     int n_;
