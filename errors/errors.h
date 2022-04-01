@@ -5,6 +5,7 @@
 #ifndef GINS_ERRORS_H
 #define GINS_ERRORS_H
 
+#include <iostream>
 #include <string>
 #include <vector>
 #include <cstdarg>
@@ -19,6 +20,8 @@ namespace errors {
         error &withStack(const error &e);
 
         error &wrap(const std::string &msg);
+
+        void log() const;
 
         /// https://en.cppreference.com/w/cpp/language/attributes/nodiscard
         [[nodiscard]] const std::vector<std::string> &getStack() const;

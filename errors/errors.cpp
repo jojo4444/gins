@@ -31,6 +31,17 @@ errors::error &errors::error::wrap(const std::string &msg) {
     return *this;
 }
 
+void errors::error::log() const {
+    if (stack.empty()) {
+        return;
+    }
+    std::cerr << "error = {\n";
+    for (const std::string &e: stack) {
+        std::cerr << "    " << e << ",\n";
+    }
+    std::cerr << "}\n";
+}
+
 bool errors::error::operator!() const {
     return !stack.empty();
 }
@@ -40,12 +51,14 @@ errors::error errors::NewError(const std::string &msg) {
 }
 
 /// https://en.cppreference.com/w/cpp/utility/variadic
+/// http://www.cplusplus.com/reference/cstdio/vsprintf/
 errors::error errors::NewErrorf(const char *fmt, ...) {
     va_list args;
+    va_start(args, fmt);
 
     /// super big buffer
     static char buff[1 << 10];
-    sprintf(buff, fmt, args);
+    vsprintf(buff, fmt, args);
 
     va_end(args);
 
