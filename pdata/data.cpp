@@ -47,7 +47,7 @@ err PolygonData::Create(int cnt) {
 /// http://www.cplusplus.com/reference/ios/ios/exceptions/
 err PolygonData::Load(const std::string &file) {
     std::ifstream in;
-    in.open(file);
+    in.open("../src/polygon/" + file);
     // RAII -> destructor -> close()
 
     if (!in.is_open()) {
@@ -68,7 +68,7 @@ err PolygonData::Load(const std::string &file) {
     for (int i = 0; i < n_; ++i) {
         in >> p[i].x >> p[i].y;
     }
-    return errors::NIL;
+    return Validation();
 }
 
 /// no exception default
