@@ -48,6 +48,10 @@ struct Point {
 
     Point(T x_, T y_);
 
+    Point<T, R> setLen(ld l) const;
+
+    Point<T, R> norm() const;
+
     R len2() const;
 
     [[nodiscard]] ld len() const;
@@ -87,6 +91,16 @@ template<typename T, typename R>
 Point<T, R>::Point(T x_, T y_) {
     x = x_;
     y = y_;
+}
+
+template<typename T, typename R>
+Point<T, R> Point<T, R>::setLen(ld l) const {
+    return norm() * l;
+}
+
+template<typename T, typename R>
+Point<T, R> Point<T, R>::norm() const {
+    return *this / len();
 }
 
 template<typename T, typename R>
