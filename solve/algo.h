@@ -7,13 +7,16 @@
 
 #include "../pdata/data.h"
 
+const int CHECK_MOD = 1e9 + 7;
+const int BASE_MOD = 147;
+
 class Algo {
 public:
     Algo() = default;
 
     ~Algo() = default;
 
-    [[nodiscard]] virtual ll Test(const PolygonData& polygon, const PointData& q) const = 0;
+    [[nodiscard]] virtual std::tuple<ll, err> Test(bool check) const = 0;
 };
 
 

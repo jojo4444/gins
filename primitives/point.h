@@ -194,4 +194,18 @@ bool RightRotate(const Point<T, R> &P1, const Point<T, R> &P2) {
     return P1 * P2 < 0;
 }
 
+
+template<typename T, typename R>
+bool InTriangle(const Point<T, R>& P1, const Point<T, R>& P2, const Point<T, R>& P3, const Point<T, R>& A) {
+    R square = std::abs((P2 - P1) * (P3 - P1));
+    R s1 = std::abs((P1 - A) * (P2 - A));
+    R s2 = std::abs((P2 - A) * (P3 - A));
+    R s3 = std::abs((P3 - A) * (P1 - A));
+    if (std::is_same<T, int>() || std::is_same<T, ll>()) {
+        return square == s1 + s2 + s3;
+    }
+    R sq = s1 + s2 + s3;
+    return std::abs(sq - square) / std::max((R)1, square) < EPS;
+}
+
 #endif //GINS_POINT_H

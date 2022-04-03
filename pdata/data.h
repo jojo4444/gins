@@ -48,7 +48,7 @@ const int CNT_BATCH = 6; /// threads
 
 class PointData {
 public:
-    explicit PointData(bool validate = false);
+    explicit PointData(bool check = false);
 
     std::tuple<Point<>, bool> GetPt(int id);
 
