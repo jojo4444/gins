@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.21)
 project(gins)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 20)
 
-add_executable(gins main.cpp polygon/data.cpp)
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror")
+
+add_executable(gins main.cpp primitives/point.h pdata/data.h pdata/data.cpp errors/errors.h errors/errors.cpp solve/algo.cpp solve/algo.h)
