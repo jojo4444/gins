@@ -5,6 +5,7 @@
 #ifndef GINS_DATA_H
 #define GINS_DATA_H
 
+#include <tuple>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -16,8 +17,8 @@
 
 using err = errors::error;
 
-const int MAX_POINT = 1 << 16;
-const int CORD_MAX = 2e9;
+const int MAX_POINT = 1 << 24;
+const int CORD_MAX = 1 << 30;
 
 class PolygonData {
 public:
@@ -27,9 +28,9 @@ public:
 
     err Create(int cnt = MAX_POINT);
 
-    err Load(const std::string& file);
+    err Load(const std::string &file);
 
-    err Save(const std::string& file) const;
+    err Save(const std::string &file) const;
 
     err Validation() const;
 
@@ -40,6 +41,20 @@ public:
 private:
     int n_;
     Point<int, ll> *p;
+};
+
+const int POINT_BATCH = 1 << 20;
+const int CNT_BATCH = 6; /// threads
+
+class PointData {
+public:
+    explicit PointData(bool validate = false);
+
+    std::tuple<Point<>, bool> GetPt(int id);
+
+private:
+    std::mt19937 rnd[CNT_BATCH];
+    int cnt[CNT_BATCH];
 };
 
 #endif //GINS_DATA_H

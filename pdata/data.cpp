@@ -31,13 +31,28 @@ err PolygonData::Create(int cnt) {
 
     /**
      * circle generation (precision: MAX_POINT <= 2^17)
-    */
+        Point<ld, ld> v(-CORD_MAX, 0);
+        for (int i = 0; i < n_; ++i) {
+            Point<ld, ld> rot = v.rotate(i * 2 * PI / n_);
+            p[i].x = (int)rot.x;
+            p[i].y = (int)rot.y;
+        }
+     */
 
-    Point<ld, ld> v(-CORD_MAX, 0);
-    for (int i = 0; i < n_; ++i) {
-        Point<ld, ld> rot = v.rotate(i * 2 * PI / n_);
-        p[i].x = (int)rot.x;
-        p[i].y = (int)rot.y;
+    /**
+     * polygon:
+     *
+     *            *
+     *          / |
+     *        /   *
+     *      /     |
+     *     *------*
+     */
+    p[0] = Point(0, 0);
+    int step = CORD_MAX / n_;
+    for (int i = 1; i < n_; ++i) {
+        p[i].x = CORD_MAX;
+        p[i].y = step * (i - 1);
     }
 
     return Validation();
@@ -89,7 +104,7 @@ err PolygonData::Save(const std::string &file) const {
     return errors::NIL;
 }
 
-/// only LeftRotate
+/// no rightRotation
 /// p[0] is left-down
 /// [x, y] in [-CORD_MAX; CORD_MAX]
 err PolygonData::Validation() const {
@@ -119,7 +134,7 @@ err PolygonData::Validation() const {
     for (int i = 0; i < n_; ++i) {
         int j = (i + 1) % n_;
         int k = (i + 2) % n_;
-        if (!LeftRotate(p[j] - p[i], p[k] - p[j])) {
+        if (RightRotate(p[j] - p[i], p[k] - p[j])) {
             return NewErrorf("polygon non-convex: p[%d], p[%d], p[%d] is (%d, %d), (%d, %d), (%d, %d)",
                              i, j, k, p[i].x, p[i].y, p[j].x, p[j].y, p[k].x, p[k].y);
         }
@@ -134,4 +149,25 @@ int PolygonData::GetLen() const {
 
 const Point<int, ll> *PolygonData::GetData() const {
     return p;
+}
+
+PointData::PointData(bool validate) {
+    for (int i = 0; i < CNT_BATCH; ++i) {
+        rnd[i].seed(i);
+        if (validate) {
+            cnt[i] = 44;
+        } else {
+            cnt[i] = POINT_BATCH;
+        }
+    }
+}
+
+std::tuple<Point<>, bool> PointData::GetPt(int id) {
+    if (cnt[id] <= 0) {
+        return std::make_tuple(Point(), false);
+    }
+    cnt[id]--;
+    int x = (int)rnd[id]() & (CORD_MAX - 1); /// <=> rnd % CORD_MAX
+    int y = (int)rnd[id]() & (CORD_MAX - 1); /// <=> rnd % CORD_MAX
+    return std::make_tuple(Point(x, y), true);
 }

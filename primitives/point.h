@@ -48,6 +48,8 @@ struct Point {
 
     Point(T x_, T y_);
 
+    Point(const Point<T, R>& P);
+
     Point<T, R> setLen(ld l) const;
 
     Point<T, R> norm() const;
@@ -91,6 +93,12 @@ template<typename T, typename R>
 Point<T, R>::Point(T x_, T y_) {
     x = x_;
     y = y_;
+}
+
+template<typename T, typename R>
+Point<T, R>::Point(const Point<T, R> &P) {
+    x = P.x;
+    y = P.y;
 }
 
 template<typename T, typename R>
@@ -179,6 +187,11 @@ R Point<T, R>::operator%(const Point<T, R> &P) const {
 template<typename T, typename R>
 bool LeftRotate(const Point<T, R> &P1, const Point<T, R> &P2) {
     return P1 * P2 > 0;
+}
+
+template<typename T, typename R>
+bool RightRotate(const Point<T, R> &P1, const Point<T, R> &P2) {
+    return P1 * P2 < 0;
 }
 
 #endif //GINS_POINT_H
