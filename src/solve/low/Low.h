@@ -13,7 +13,7 @@ public:
 
     ~Low() = default;
 
-    [[nodiscard]] std::tuple<ll, err> Test(bool check) const override;
+    [[nodiscard]] std::tuple<ll, err> Run(bool check) const override;
 };
 
 

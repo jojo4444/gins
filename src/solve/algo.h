@@ -6,6 +6,7 @@
 #define GINS_ALGO_H
 
 #include "../pdata/data.h"
+#include <chrono>
 
 const int CHECK_MOD = 1e9 + 7;
 const int BASE_MOD = 147;
@@ -16,8 +17,9 @@ public:
 
     ~Algo() = default;
 
-    [[nodiscard]] virtual std::tuple<ll, err> Test(bool check) const = 0;
+    [[nodiscard]] virtual std::tuple<ll, err> Run(bool check) const = 0;
 };
 
+std::tuple<ll, ld, err> calcTime(const Algo& a, bool check);
 
 #endif //GINS_ALGO_H

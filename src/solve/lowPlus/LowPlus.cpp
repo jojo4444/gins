@@ -1,14 +1,14 @@
 //
-// Created by jojo on 03.04.2022.
+// Created by jojo on 11.04.2022.
 //
 
-#include "Low.h"
+#include "LowPlus.h"
 
-std::tuple<ll, err> Low::Run(bool check) const {
+std::tuple<ll, err> LowPlus::Run(bool check) const {
     PolygonData Polygon;
     auto err = Polygon.Create();
     if (!err) {
-        return std::make_tuple(0, errors::Wrap(err, "low algo"));
+        return std::make_tuple(0, errors::Wrap(err, "low-plus algo"));
     }
 
     ll checksum = 0;
@@ -18,10 +18,14 @@ std::tuple<ll, err> Low::Run(bool check) const {
 
     PointData Pts(check);
 
-    for (int i = 0; i < CNT_BATCH; ++i) {
-        ll s = 0;
+    ll sRes[CNT_BATCH];
+
+    auto calculate = [&](int i) -> void {
+        ll& s = sRes[i];
+        s = 0;
+
         while (true) {
-            auto [pt, nxt] = Pts.GetPt(i);
+            auto[pt, nxt] = Pts.GetPt(i);
             if (!nxt) {
                 break;
             }
@@ -36,7 +40,16 @@ std::tuple<ll, err> Low::Run(bool check) const {
 
             s = (s * BASE_MOD + inside) % CHECK_MOD;
         }
-        checksum = (checksum + s) % CHECK_MOD;
+    };
+
+    std::thread th[CNT_BATCH];
+    for (int i = 0; i < CNT_BATCH; ++i) {
+        th[i] = std::thread(calculate, i);
+    }
+
+    for (int i = 0; i < CNT_BATCH; ++i) {
+        th[i].join();
+        checksum = (checksum + sRes[i]) % CHECK_MOD;
     }
 
     return std::make_tuple(checksum, errors::NIL);
