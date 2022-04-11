@@ -3,6 +3,7 @@
 #include "solve/low/Low.h"
 #include "solve/lowPlus/LowPlus.h"
 #include "solve/medium/medium.h"
+#include "solve/mediumPlus/mediumPlus.h"
 
 #include <iostream>
 #include <iomanip>
@@ -15,7 +16,9 @@ enum class Type {
     Low,
     LowPlus,
     Medium,
+    MediumPlus,
     All,
+    Fast,
 };
 
 std::map<std::string, Type> algo = {
@@ -23,7 +26,9 @@ std::map<std::string, Type> algo = {
         {"low", Type::Low},
         {"lowplus", Type::LowPlus},
         {"medium", Type::Medium},
+        {"mediumplus", Type::MediumPlus},
         {"all", Type::All},
+        {"fast", Type::Fast},
 };
 
 std::tuple<Type, int> getToken() {
@@ -59,11 +64,11 @@ std::tuple<Type, int> getToken() {
         i = j;
     }
 
-    if (tokens.size() == 1 && tokens[0] == "help") {
+    if (tokens[0] == "help") {
         return std::make_tuple(Type::Help, 0);
     }
 
-    if (tokens.size() == 1 && tokens[0] == "exit") {
+    if (tokens[0] == "exit") {
         return std::make_tuple(Type::Exit, 0);
     }
 
@@ -93,7 +98,7 @@ void writeHelp() {
     std::string msg = R""""(
         using: [type] [points]
         type:
-            [string]: low, lowplus, medium, all (Low = lOw = ... ignoring low/up)
+            [string]: low, lowplus, medium, mediumplus, all (Low = lOw = ... ignoring low/up)
         points:
             [int]: greater 0
 
@@ -149,10 +154,18 @@ void event(Type t, int points) {
         case Type::Medium:
             run<Medium>(points, seed, "medium");
             break;
+        case Type::MediumPlus:
+            run<MediumPlus>(points, seed, "mediumPlus");
+            break;
         case Type::All:
             run<Low>(points, seed, "low");
             run<LowPlus>(points, seed, "lowPlus");
             run<Medium>(points, seed, "medium");
+            run<MediumPlus>(points, seed, "mediumPlus");
+            break;
+        case Type::Fast:
+            run<Medium>(points, seed, "medium");
+            run<MediumPlus>(points, seed, "mediumPlus");
             break;
     }
 }
