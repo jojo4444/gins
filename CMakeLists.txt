@@ -3,6 +3,12 @@ project(gins)
 
 set(CMAKE_CXX_STANDARD 20)
 
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror -pthread")
 
-add_executable(gins main.cpp primitives/point.h pdata/data.h pdata/data.cpp errors/errors.h errors/errors.cpp solve/algo.cpp solve/algo.h)
+set(CMAKE_CXX_FLAGS_RELEASE_INIT "-O3")
+
+include_directories(src)
+
+add_subdirectory(src)
+add_subdirectory(test)
+add_subdirectory(lib/googletest)
