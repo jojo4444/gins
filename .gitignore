@@ -35,4 +35,5 @@
 .idea
 cmake-build-debug
 cmake-build-release
-src
+src/src
+lib
