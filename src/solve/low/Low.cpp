@@ -21,7 +21,7 @@ std::tuple<ll, err> Low::Run(bool check) const {
     for (int i = 0; i < CNT_BATCH; ++i) {
         ll s = 0;
         while (true) {
-            auto [pt, nxt] = Pts.GetPt(i);
+            auto[pt, nxt] = Pts.GetPt(i);
             if (!nxt) {
                 break;
             }

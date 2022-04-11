@@ -7,8 +7,8 @@ int main() {
     Low l1;
     LowPlus l2;
 
-    auto [checksum1, tm1, err1] = calcTime(l1, true);
-    auto [checksum2, tm2, err2] = calcTime(l2, true);
+    auto[checksum1, tm1, err1] = calcTime(l1, true);
+    auto[checksum2, tm2, err2] = calcTime(l2, true);
 
     if (!err1) {
         err1.log();

@@ -21,7 +21,7 @@ std::tuple<ll, err> LowPlus::Run(bool check) const {
     ll sRes[CNT_BATCH];
 
     auto calculate = [&](int i) -> void {
-        ll& s = sRes[i];
+        ll &s = sRes[i];
         s = 0;
 
         while (true) {

@@ -119,7 +119,8 @@ err PolygonData::Validation() const {
 
     for (int i = 0; i < n_; ++i) {
         if (std::abs(p[i].x) > CORD_MAX || std::abs(p[i].y) > CORD_MAX) {
-            return NewErrorf("incorrect point, want cord in [%d, %d], have x = %d, y = %d", -CORD_MAX, CORD_MAX, p[i].x, p[i].y);
+            return NewErrorf("incorrect point, want cord in [%d, %d], have x = %d, y = %d", -CORD_MAX, CORD_MAX, p[i].x,
+                             p[i].y);
         }
         if (p[i].x < xm || (p[i].x == xm && p[i].y < ym)) {
             xm = p[i].x;
@@ -167,7 +168,7 @@ std::tuple<Point<>, bool> PointData::GetPt(int id) {
         return std::make_tuple(Point(), false);
     }
     cnt[id]--;
-    int x = (int)rnd[id]() & (CORD_MAX - 1); /// <=> rnd % CORD_MAX
-    int y = (int)rnd[id]() & (CORD_MAX - 1); /// <=> rnd % CORD_MAX
+    int x = (int) rnd[id]() & (CORD_MAX - 1); /// <=> rnd % CORD_MAX
+    int y = (int) rnd[id]() & (CORD_MAX - 1); /// <=> rnd % CORD_MAX
     return std::make_tuple(Point(x, y), true);
 }

@@ -20,6 +20,6 @@ public:
     [[nodiscard]] virtual std::tuple<ll, err> Run(bool check) const = 0;
 };
 
-std::tuple<ll, ld, err> calcTime(const Algo& a, bool check);
+std::tuple<ll, ld, err> calcTime(const Algo &a, bool check);
 
 #endif //GINS_ALGO_H
