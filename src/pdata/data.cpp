@@ -152,14 +152,11 @@ const Point<int, ll> *PolygonData::GetData() const {
     return p;
 }
 
-PointData::PointData(bool check) {
+PointData::PointData(int points, int seed) {
+    int batch = (points + CNT_BATCH - 1) / CNT_BATCH;
     for (int i = 0; i < CNT_BATCH; ++i) {
-        rnd[i].seed(i);
-        if (check) {
-            cnt[i] = 4;
-        } else {
-            cnt[i] = POINT_BATCH;
-        }
+        rnd[i].seed(i + seed);
+        cnt[i] = batch;
     }
 }
 
