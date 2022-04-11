@@ -2,13 +2,13 @@
 // Created by jojo on 11.04.2022.
 //
 
-#include "LowPlus.h"
+#include "medium.h"
 
-std::tuple<ll, ll, err> LowPlus::Run(int points, int seed) const {
+std::tuple<ll, ll, err> Medium::Run(int points, int seed) const {
     PolygonData Polygon;
     auto err = Polygon.Create();
     if (!err) {
-        return std::make_tuple(0, 0, errors::Wrap(err, "low-plus algo"));
+        return std::make_tuple(0, 0, errors::Wrap(err, "medium algo"));
     }
 
     auto p = Polygon.GetData();
@@ -31,14 +31,26 @@ std::tuple<ll, ll, err> LowPlus::Run(int points, int seed) const {
                 break;
             }
 
+            /// left, down or up
+            if (pt.x < p[0].x || LeftRotate(pt - p[0], p[1] - p[0]) || LeftRotate(p[n - 1] - p[0], pt - p[0])) {
+                s = (s * BASE_MOD) % CHECK_MOD;
+                continue;
+            }
+
             bool inside = false;
-            for (int j = 1; j + 1 < n; ++j) {
-                if (InTriangle(p[0], p[j], p[j + 1], pt)) {
-                    inside = true;
-                    ++c;
-                    break;
+
+            int l = 1, r = n; /// [l; r)
+            while (l + 1 < r) {
+                int m = (l + r) >> 1;
+                if (RightRotate(p[m] - p[0], pt - p[0])) {
+                    r = m;
+                } else {
+                    l = m;
                 }
             }
+
+            inside = InTriangle(p[0], p[l], p[l + 1], pt);
+            c += inside;
 
             s = (s * BASE_MOD + inside) % CHECK_MOD;
         }

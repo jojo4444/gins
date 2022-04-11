@@ -2,20 +2,19 @@
 // Created by jojo on 11.04.2022.
 //
 
-#ifndef GINS_LOWPLUS_H
-#define GINS_LOWPLUS_H
+#ifndef GINS_MEDIUM_H
+#define GINS_MEDIUM_H
 
 #include "../algo.h"
 #include <thread>
 
-class LowPlus : public Algo {
+class Medium : public Algo {
 public:
-    LowPlus() = default;
+    Medium() = default;
 
-    ~LowPlus() = default;
+    ~Medium() = default;
 
     [[nodiscard]] std::tuple<ll, ll, err> Run(int points, int seed) const override;
 };
 
-
-#endif //GINS_LOWPLUS_H
+#endif //GINS_MEDIUM_H

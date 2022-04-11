@@ -43,18 +43,17 @@ private:
     Point<int, ll> *p;
 };
 
-const int POINT_BATCH = 1 << 20;
 const int CNT_BATCH = 6; /// threads
 
 class PointData {
 public:
-    explicit PointData(bool check = false);
+    explicit PointData(int points = 4, int seed = 4);
 
     std::tuple<Point<>, bool> GetPt(int id);
 
 private:
     std::mt19937 rnd[CNT_BATCH];
-    int cnt[CNT_BATCH];
+    int cnt[CNT_BATCH]{};
 };
 
 #endif //GINS_DATA_H

@@ -48,7 +48,7 @@ struct Point {
 
     Point(T x_, T y_);
 
-    Point(const Point<T, R>& P);
+    Point(const Point<T, R> &P);
 
     Point<T, R> setLen(ld l) const;
 
@@ -196,7 +196,7 @@ bool RightRotate(const Point<T, R> &P1, const Point<T, R> &P2) {
 
 
 template<typename T, typename R>
-bool InTriangle(const Point<T, R>& P1, const Point<T, R>& P2, const Point<T, R>& P3, const Point<T, R>& A) {
+bool InTriangle(const Point<T, R> &P1, const Point<T, R> &P2, const Point<T, R> &P3, const Point<T, R> &A) {
     R square = std::abs((P2 - P1) * (P3 - P1));
     R s1 = std::abs((P1 - A) * (P2 - A));
     R s2 = std::abs((P2 - A) * (P3 - A));
@@ -205,7 +205,7 @@ bool InTriangle(const Point<T, R>& P1, const Point<T, R>& P2, const Point<T, R>&
         return square == s1 + s2 + s3;
     }
     R sq = s1 + s2 + s3;
-    return std::abs(sq - square) / std::max((R)1, square) < EPS;
+    return std::abs(sq - square) / std::max((R) 1, square) < EPS;
 }
 
 #endif //GINS_POINT_H

@@ -17,9 +17,9 @@ public:
 
     ~Algo() = default;
 
-    [[nodiscard]] virtual std::tuple<ll, err> Run(bool check) const = 0;
+    [[nodiscard]] virtual std::tuple<ll, ll, err> Run(int points, int seed) const = 0;
 };
 
-std::tuple<ll, ld, err> calcTime(const Algo& a, bool check);
+std::tuple<ll, ll, ld, err> calculateAlgo(const Algo &a, int points, int seed);
 
 #endif //GINS_ALGO_H
