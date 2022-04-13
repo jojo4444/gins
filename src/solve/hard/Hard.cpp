@@ -78,7 +78,7 @@ std::tuple<ll, ll, err> Hard::Run(int points, int seed) const {
             int k = 1;
             while (k <= n - 1) {
                 // 1 cache line
-                __builtin_prefetch(etan + k * 16);
+                __builtin_prefetch(etan + k * 8);
                 k = (k << 1) + (etan[k] < t);
             }
             k >>= __builtin_ffs(~k);
