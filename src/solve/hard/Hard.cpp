@@ -13,6 +13,7 @@ std::tuple<ll, ll, err> Hard::Run(int points, int seed) const {
 
     auto p = Polygon.GetData();
     int n = Polygon.GetLen();
+    int lg = std::max(0, std::__lg(n - 1) - 1);
 
     // https://www.cplusplus.com/doc/tutorial/dynamic/
     // for bad_alloc
@@ -76,9 +77,15 @@ std::tuple<ll, ll, err> Hard::Run(int points, int seed) const {
             double t = (double) vec.y / vec.x + 1e-16;
 
             int k = 1;
+            // 1 cache line -> prefetch
+
+            for (int j = 0; j < lg; ++j) {
+                __builtin_prefetch(etan + (k << 3));
+                k = (k << 1) + (etan[k] < t);
+            }
+
             while (k <= n - 1) {
-                // 1 cache line
-                __builtin_prefetch(etan + k * 8);
+                __builtin_prefetch(etan + (k << 3));
                 k = (k << 1) + (etan[k] < t);
             }
             k >>= __builtin_ffs(~k);

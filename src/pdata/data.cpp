@@ -39,7 +39,8 @@ err PolygonData::Create(int cnt) {
         }
      */
 
-    /**
+    /*
+    *
      * polygon:
      *
      *            *
@@ -47,8 +48,26 @@ err PolygonData::Create(int cnt) {
      *        /   *
      *      /     |
      *     *------*
-     */
+     *
     p[0] = Point(0, 0);
+    int step = CORD_MAX / n_;
+    for (int i = 1; i < n_; ++i) {
+        p[i].x = CORD_MAX;
+        p[i].y = step * (i - 1);
+    }
+    */
+
+    /**
+     * polygon:
+     *         *
+     *        /|
+     *       / |
+     *     *   *
+     *      \  |
+     *       \ |
+     *        *
+     */
+    p[0] = Point(0, CORD_MAX / 2);
     int step = CORD_MAX / n_;
     for (int i = 1; i < n_; ++i) {
         p[i].x = CORD_MAX;
