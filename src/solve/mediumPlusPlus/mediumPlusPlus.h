@@ -17,6 +17,4 @@ public:
     [[nodiscard]] std::tuple<ll, ll, err> Run(int points, int seed) const override;
 };
 
-void eytzinger(int k, int n, int &i, double *t, int *num, const double *a);
-
 #endif //GINS_MEDIUMPLUSPLUS_H

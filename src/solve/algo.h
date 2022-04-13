@@ -22,4 +22,6 @@ public:
 
 std::tuple<ll, ll, ld, err> calculateAlgo(const Algo &a, int points, int seed);
 
+void eytzinger(int k, int n, int &i, double *t, int *num, const double *a);
+
 #endif //GINS_ALGO_H
