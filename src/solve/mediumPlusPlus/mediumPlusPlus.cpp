@@ -1,14 +1,14 @@
 //
-// Created by jojo on 11.04.2022.
+// Created by jojo on 12.04.2022.
 //
 
-#include "mediumPlus.h"
+#include "mediumPlusPlus.h"
 
-std::tuple<ll, ll, err> MediumPlus::Run(int points, int seed) const {
+std::tuple<ll, ll, err> MediumPlusPlus::Run(int points, int seed) const {
     PolygonData Polygon;
     auto err = Polygon.Create();
     if (!err) {
-        return std::make_tuple(0, 0, errors::Wrap(err, "MediumPlus algo"));
+        return std::make_tuple(0, 0, errors::Wrap(err, "MediumPlusPlus algo"));
     }
 
     auto p = Polygon.GetData();
@@ -16,15 +16,28 @@ std::tuple<ll, ll, err> MediumPlus::Run(int points, int seed) const {
 
     // https://www.cplusplus.com/doc/tutorial/dynamic/
     // for bad_alloc
-    auto angles = new(std::nothrow) double[n];
-    if (angles == nullptr) {
-        return std::make_tuple(0, 0, errors::NewError("bad alloc (angles)"));
+    auto tans = new(std::nothrow) double[n - 1];
+    if (tans == nullptr) {
+        return std::make_tuple(0, 0, errors::NewError("bad alloc (tans)"));
     }
 
-    for (int i = 1; i < n; ++i) {
-        auto vec = p[i] - p[0];
-        angles[i] = atan2(vec.y, vec.x);
+    auto etan = new(std::nothrow) double[n];
+    if (etan == nullptr) {
+        return std::make_tuple(0, 0, errors::NewError("bad alloc (etz tans)"));
     }
+
+    auto num = new(std::nothrow) int[n];
+    if (num == nullptr) {
+        return std::make_tuple(0, 0, errors::NewError("bad alloc (etz num)"));
+    }
+
+    for (int i = 0; i < n - 1; ++i) {
+        auto vec = p[i + 1] - p[0];
+        tans[i] = (double) vec.y / vec.x;
+    }
+
+    int it = 0;
+    eytzinger(1, n - 1, it, etan, num, tans);
 
     PointData Pts(points, seed);
 
@@ -58,18 +71,16 @@ std::tuple<ll, ll, err> MediumPlus::Run(int points, int seed) const {
 
             bool inside = false;
 
-            auto phi = atan2(vec.y, vec.x) + 1e-16;
-            int l = 1, r = n; /// [l; r)
-            while (l + 1 < r) {
-                int m = (l + r) >> 1;
-                if (angles[m] > phi) {
-                    r = m;
-                } else {
-                    l = m;
-                }
-            }
+            double t = (double) vec.y / vec.x + 1e-16;
 
-            inside = InTriangle(p[0], p[l], p[l + 1], pt) || (l > 1 && InTriangle(p[0], p[l - 1], p[l], pt));
+            int k = 1;
+            while (k <= n - 1) {
+                k = 2 * k + (etan[k] < t);
+            }
+            k >>= __builtin_ffs(~k);
+            k = num[k] + 1;
+
+            inside = InTriangle(p[0], p[k - 1], p[k], pt);
 
             c += inside;
 
@@ -89,7 +100,18 @@ std::tuple<ll, ll, err> MediumPlus::Run(int points, int seed) const {
         in += cnt[i];
     }
 
-    delete[] angles;
+    delete[] tans;
+    delete[] etan;
+    delete[] num;
 
     return std::make_tuple(checksum, in, errors::NIL);
+}
+
+void eytzinger(int k, int n, int &i, double *t, int *num, const double *a) {
+    if (k <= n) {
+        eytzinger(2 * k, n, i, t, num, a);
+        num[k] = i;
+        t[k] = a[i++];
+        eytzinger(2 * k + 1, n, i, t, num, a);
+    }
 }

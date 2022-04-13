@@ -4,6 +4,7 @@
 #include "solve/lowPlus/LowPlus.h"
 #include "solve/medium/medium.h"
 #include "solve/mediumPlus/mediumPlus.h"
+#include "solve/mediumPlusPlus/mediumPlusPlus.h"
 
 #include <iostream>
 #include <iomanip>
@@ -17,18 +18,26 @@ enum class Type {
     LowPlus,
     Medium,
     MediumPlus,
+    MediumPlusPlus,
     All,
     Fast,
 };
 
+const std::string low = "low";
+const std::string low_p = "low+";
+const std::string medium = "medium";
+const std::string medium_p = "medium+";
+const std::string medium_pp = "medium++";
+
 std::map<std::string, Type> algo = {
-        {"help", Type::Help},
-        {"low", Type::Low},
-        {"lowplus", Type::LowPlus},
-        {"medium", Type::Medium},
-        {"mediumplus", Type::MediumPlus},
-        {"all", Type::All},
-        {"fast", Type::Fast},
+        {"help",   Type::Help},
+        {low,      Type::Low},
+        {low_p,    Type::LowPlus},
+        {medium,   Type::Medium},
+        {medium_p, Type::MediumPlus},
+        {medium_pp, Type::MediumPlusPlus},
+        {"all",    Type::All},
+        {"fast",   Type::Fast},
 };
 
 std::tuple<Type, int> getToken() {
@@ -98,7 +107,9 @@ void writeHelp() {
     std::string msg = R""""(
         using: [type] [points]
         type:
-            [string]: low, lowplus, medium, mediumplus, all (Low = lOw = ... ignoring low/up)
+            [string]: )"""" +
+            low + ", " + low_p + ", " + medium + ", " + medium_p + ", " + medium_pp
+            + R""""(, all, fast (ignore low/up)
         points:
             [int]: greater 0
 
@@ -117,7 +128,7 @@ void writeStat(ll checksum, ll inside, ld sec, const std::string &msg) {
 }
 
 template<typename T>
-void run(int points, int seed, const std::string& name) {
+void run(int points, int seed, const std::string &name) {
     T a;
     auto msg = "algo: " + name;
 
@@ -146,26 +157,31 @@ void event(Type t, int points) {
             std::cout << "incorrect input ¯\\_(ツ)_/¯" << std::endl;
             break;
         case Type::Low:
-            run<Low>(points, seed, "low");
+            run<Low>(points, seed, low);
             break;
         case Type::LowPlus:
-            run<LowPlus>(points, seed, "lowPlus");
+            run<LowPlus>(points, seed, low_p);
             break;
         case Type::Medium:
-            run<Medium>(points, seed, "medium");
+            run<Medium>(points, seed, medium);
             break;
         case Type::MediumPlus:
-            run<MediumPlus>(points, seed, "mediumPlus");
+            run<MediumPlus>(points, seed, medium_p);
+            break;
+        case Type::MediumPlusPlus:
+            run<MediumPlusPlus>(points, seed, medium_pp);
             break;
         case Type::All:
-            run<Low>(points, seed, "low");
-            run<LowPlus>(points, seed, "lowPlus");
-            run<Medium>(points, seed, "medium");
-            run<MediumPlus>(points, seed, "mediumPlus");
+            run<Low>(points, seed, low);
+            run<LowPlus>(points, seed, low_p);
+            run<Medium>(points, seed, medium);
+            run<MediumPlus>(points, seed, medium_p);
+            run<MediumPlusPlus>(points, seed, medium_pp);
             break;
         case Type::Fast:
-            run<Medium>(points, seed, "medium");
-            run<MediumPlus>(points, seed, "mediumPlus");
+            run<Medium>(points, seed, medium);
+            run<MediumPlus>(points, seed, medium_p);
+            run<MediumPlusPlus>(points, seed, medium_pp);
             break;
     }
 }

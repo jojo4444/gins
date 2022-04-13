@@ -31,11 +31,17 @@ std::tuple<ll, ll, err> Medium::Run(int points, int seed) const {
                 break;
             }
 
+            if (p[0] == pt) {
+                s = (s * BASE_MOD + 1) % CHECK_MOD;
+                continue;
+            }
+
             /// left, down or up
-            if (pt.x < p[0].x || LeftRotate(pt - p[0], p[1] - p[0]) || LeftRotate(p[n - 1] - p[0], pt - p[0])) {
+            if (pt.x <= p[0].x || LeftRotate(pt - p[0], p[1] - p[0]) || LeftRotate(p[n - 1] - p[0], pt - p[0])) {
                 s = (s * BASE_MOD) % CHECK_MOD;
                 continue;
             }
+
 
             bool inside = false;
 
