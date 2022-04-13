@@ -33,15 +33,15 @@ const std::string medium_pp = "medium++";
 const std::string hard = "hard";
 
 std::map<std::string, Type> algo = {
-        {"help",   Type::Help},
-        {low,      Type::Low},
-        {low_p,    Type::LowPlus},
-        {medium,   Type::Medium},
-        {medium_p, Type::MediumPlus},
+        {"help",    Type::Help},
+        {low,       Type::Low},
+        {low_p,     Type::LowPlus},
+        {medium,    Type::Medium},
+        {medium_p,  Type::MediumPlus},
         {medium_pp, Type::MediumPlusPlus},
-        {hard, Type::Hard},
-        {"all",    Type::All},
-        {"fast",   Type::Fast},
+        {hard,      Type::Hard},
+        {"all",     Type::All},
+        {"fast",    Type::Fast},
 };
 
 std::tuple<Type, int> getToken() {
@@ -112,8 +112,8 @@ void writeHelp() {
         using: [type] [points]
         type:
             [string]: )"""" +
-            low + ", " + low_p + ", " + medium + ", " + medium_p + ", " + medium_pp + ", " + hard
-            + R""""(, all, fast (ignore low/up)
+                      low + ", " + low_p + ", " + medium + ", " + medium_p + ", " + medium_pp + ", " + hard
+                      + R""""(, all, fast (ignore low/up)
         points:
             [int]: greater 0
 

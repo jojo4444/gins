@@ -39,7 +39,7 @@ std::tuple<ll, ll, err> Hard::Run(int points, int seed) const {
         if (abs(vec.y) >= abs(vec.x)) {
             return std::make_tuple(0, 0, errors::NewError("|tg| > 1, need an affine transformation"));
         }
-        tans[i] = (ll)((double) vec.y / vec.x * 1e18);
+        tans[i] = (ll) ((double) vec.y / vec.x * 1e18);
     }
 
     int it = 0;
