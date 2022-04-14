@@ -1,18 +1,19 @@
 //
-// Created by jojo on 12.04.2022.
+// Created by jojo on 13.04.2022.
 //
 
-#include "mediumPlusPlus.h"
+#include "Hard.h"
 
-std::tuple<ll, ll, err> MediumPlusPlus::Run(int points, int seed) const {
+std::tuple<ll, ll, err> Hard::Run(int points, int seed) const {
     PolygonData Polygon;
     auto err = Polygon.Create();
     if (!err) {
-        return std::make_tuple(0, 0, errors::Wrap(err, "MediumPlusPlus algo"));
+        return std::make_tuple(0, 0, errors::Wrap(err, "Hard algo"));
     }
 
     auto p = Polygon.GetData();
     int n = Polygon.GetLen();
+    int lg = std::max(0, std::__lg(n - 1) - 1);
 
     // https://www.cplusplus.com/doc/tutorial/dynamic/
     // for bad_alloc
@@ -21,7 +22,9 @@ std::tuple<ll, ll, err> MediumPlusPlus::Run(int points, int seed) const {
         return std::make_tuple(0, 0, errors::NewError("bad alloc (tans)"));
     }
 
-    auto etan = new(std::nothrow) double[n];
+    // https://medium.com/software-design/why-software-developers-should-care-about-cpu-caches-8da04355bb8a#:~:text=A%20cache%20line%20is%20the,region%20is%20read%20or%20written.
+    // https://en.cppreference.com/w/c/memory/aligned_alloc
+    auto etan = (double *) aligned_alloc(64, (sizeof(double)) * (n + 1));
     if (etan == nullptr) {
         return std::make_tuple(0, 0, errors::NewError("bad alloc (etz tans)"));
     }
@@ -74,8 +77,16 @@ std::tuple<ll, ll, err> MediumPlusPlus::Run(int points, int seed) const {
             double t = (double) vec.y / vec.x + 1e-16;
 
             int k = 1;
+            // 1 cache line -> prefetch
+
+            for (int j = 0; j < lg; ++j) {
+                __builtin_prefetch(etan + (k << 3));
+                k = (k << 1) + (etan[k] < t);
+            }
+
             while (k <= n - 1) {
-                k = 2 * k + (etan[k] < t);
+                __builtin_prefetch(etan + (k << 3));
+                k = (k << 1) + (etan[k] < t);
             }
             k >>= __builtin_ffs(~k);
             k = num[k] + 1;
@@ -101,7 +112,7 @@ std::tuple<ll, ll, err> MediumPlusPlus::Run(int points, int seed) const {
     }
 
     delete[] tans;
-    delete[] etan;
+    free(etan);
     delete[] num;
 
     return std::make_tuple(checksum, in, errors::NIL);

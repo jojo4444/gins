@@ -22,4 +22,14 @@ public:
 
 std::tuple<ll, ll, ld, err> calculateAlgo(const Algo &a, int points, int seed);
 
+template<typename T>
+void eytzinger(int k, int n, int &i, T *t, int *num, const T *a) {
+    if (k <= n) {
+        eytzinger(2 * k, n, i, t, num, a);
+        num[k] = i;
+        t[k] = a[i++];
+        eytzinger(2 * k + 1, n, i, t, num, a);
+    }
+}
+
 #endif //GINS_ALGO_H

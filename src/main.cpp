@@ -5,6 +5,7 @@
 #include "solve/medium/medium.h"
 #include "solve/mediumPlus/mediumPlus.h"
 #include "solve/mediumPlusPlus/mediumPlusPlus.h"
+#include "solve/hard/Hard.h"
 
 #include <iostream>
 #include <iomanip>
@@ -19,6 +20,7 @@ enum class Type {
     Medium,
     MediumPlus,
     MediumPlusPlus,
+    Hard,
     All,
     Fast,
 };
@@ -28,16 +30,18 @@ const std::string low_p = "low+";
 const std::string medium = "medium";
 const std::string medium_p = "medium+";
 const std::string medium_pp = "medium++";
+const std::string hard = "hard";
 
 std::map<std::string, Type> algo = {
-        {"help",   Type::Help},
-        {low,      Type::Low},
-        {low_p,    Type::LowPlus},
-        {medium,   Type::Medium},
-        {medium_p, Type::MediumPlus},
+        {"help",    Type::Help},
+        {low,       Type::Low},
+        {low_p,     Type::LowPlus},
+        {medium,    Type::Medium},
+        {medium_p,  Type::MediumPlus},
         {medium_pp, Type::MediumPlusPlus},
-        {"all",    Type::All},
-        {"fast",   Type::Fast},
+        {hard,      Type::Hard},
+        {"all",     Type::All},
+        {"fast",    Type::Fast},
 };
 
 std::tuple<Type, int> getToken() {
@@ -108,8 +112,8 @@ void writeHelp() {
         using: [type] [points]
         type:
             [string]: )"""" +
-            low + ", " + low_p + ", " + medium + ", " + medium_p + ", " + medium_pp
-            + R""""(, all, fast (ignore low/up)
+                      low + ", " + low_p + ", " + medium + ", " + medium_p + ", " + medium_pp + ", " + hard
+                      + R""""(, all, fast (ignore low/up)
         points:
             [int]: greater 0
 
@@ -171,17 +175,22 @@ void event(Type t, int points) {
         case Type::MediumPlusPlus:
             run<MediumPlusPlus>(points, seed, medium_pp);
             break;
+        case Type::Hard:
+            run<Hard>(points, seed, hard);
+            break;
         case Type::All:
             run<Low>(points, seed, low);
             run<LowPlus>(points, seed, low_p);
             run<Medium>(points, seed, medium);
             run<MediumPlus>(points, seed, medium_p);
             run<MediumPlusPlus>(points, seed, medium_pp);
+            run<Hard>(points, seed, hard);
             break;
         case Type::Fast:
             run<Medium>(points, seed, medium);
             run<MediumPlus>(points, seed, medium_p);
             run<MediumPlusPlus>(points, seed, medium_pp);
+            run<Hard>(points, seed, hard);
             break;
     }
 }
