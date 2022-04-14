@@ -4,6 +4,8 @@
 
 #include "HardPlus.h"
 
+int iffs[16][16];
+
 std::tuple<ll, ll, err> HardPlus::Run(int points, int seed) const {
     PolygonData Polygon;
     auto err = Polygon.Create();
@@ -55,6 +57,13 @@ std::tuple<ll, ll, err> HardPlus::Run(int points, int seed) const {
     ll sRes[CNT_BATCH];
     ll cnt[CNT_BATCH];
 
+    for (int i = 0; i < 16; ++i) {
+        for (int j = 0; j < 16; ++j) {
+            iffs[i][j] = __builtin_ffs(~(i + 16 * j)) - 1;
+            __builtin_prefetch(&iffs[i][j], 0, 3);
+        }
+    }
+
     auto calculate = [&](int i) -> void {
         ll &s = sRes[i];
         ll &c = cnt[i];
@@ -82,15 +91,12 @@ std::tuple<ll, ll, err> HardPlus::Run(int points, int seed) const {
 
             double t = (double) vec.y / vec.x + 1e-16;
 
-            int k = 0, id = 0, mask, j;
+            int k = 0, id = 0, j;
             __m256d x = _mm256_set1_pd(t);
             while (k < blocks) {
-                mask = cmp(x, &btree[k << 3]) + (cmp(x, &btree[(k << 3) + 4]) << 4);
-                j = __builtin_ffs(~mask) - 1;
-                if (j < B) {
-                    id = k * B + j;
-                }
-                k = go(k, j);
+                j = iffs[cmp(x, &btree[k << 3])][cmp(x, &btree[(k << 3) + 4])];
+                id = ((j < B) ? (k << 3) + j : id);
+                k += (k << 3) + j + 1;
             }
             id = num[id] + 1;
 
@@ -146,6 +152,6 @@ int cmp(const __m256d &x, const double *ptr) {
     /// compare all (x_i > y_i)
     __m256d mask = _mm256_cmp_pd(x, y, _CMP_GT_OS);
 
-    /// create mask from reg
+    /// create mask_int from mask_vec
     return _mm256_movemask_pd(mask);
 }

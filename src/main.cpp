@@ -25,6 +25,7 @@ enum class Type {
     HardPlus,
     All,
     Fast,
+    SuperFast,
 };
 
 const std::string low = "low";
@@ -46,6 +47,7 @@ std::map<std::string, Type> algo = {
         {hard_p,    Type::HardPlus},
         {"all",     Type::All},
         {"fast",    Type::Fast},
+        {"fast+",    Type::SuperFast},
 };
 
 std::tuple<Type, int> getToken() {
@@ -118,7 +120,7 @@ void writeHelp() {
             [string]: )"""" +
                       low + ", " + low_p + ", " + medium + ", " + medium_p + ", " + medium_pp + ", " + hard + ", " +
                       hard_p
-                      + R""""(, all, fast (ignore low/up)
+                      + R""""(, all, fast, fast+ (ignore low/up)
         points:
             [int]: greater 0
 
@@ -198,6 +200,11 @@ void event(Type t, int points) {
         case Type::Fast:
             run<Medium>(points, seed, medium);
             run<MediumPlus>(points, seed, medium_p);
+            run<MediumPlusPlus>(points, seed, medium_pp);
+            run<Hard>(points, seed, hard);
+            run<HardPlus>(points, seed, hard_p);
+            break;
+        case Type::SuperFast:
             run<MediumPlusPlus>(points, seed, medium_pp);
             run<Hard>(points, seed, hard);
             run<HardPlus>(points, seed, hard_p);

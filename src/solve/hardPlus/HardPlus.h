@@ -5,6 +5,8 @@
 #ifndef GINS_HARDPLUS_H
 #define GINS_HARDPLUS_H
 
+// check: cat /proc/cpuinfo
+// my cp no support avx512f ;((
 #pragma GCC target("avx2")
 
 #include <x86intrin.h>
@@ -16,6 +18,8 @@
 const int B = 8;
 
 const double INF_TAN = 1e18;
+
+extern int iffs[1 << 4][1 << 4];
 
 class HardPlus : public Algo {
 public:
