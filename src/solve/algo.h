@@ -8,6 +8,9 @@
 #include "../pdata/data.h"
 #include <chrono>
 
+// __builtin_ funcs:
+// https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html
+
 const int CHECK_MOD = 1e9 + 7;
 const int BASE_MOD = 147;
 
