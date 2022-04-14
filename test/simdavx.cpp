@@ -64,7 +64,7 @@ TEST(LoadDouble, loadu) {
             __m256d y;
             double y_[4];
         } val{
-            x,
+                x,
         };
 
         for (int j = 0; j < 4; ++j) {
