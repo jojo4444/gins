@@ -17,14 +17,14 @@ std::tuple<ll, ll, err> Hard::Run(int points, int seed) const {
 
     // https://www.cplusplus.com/doc/tutorial/dynamic/
     // for bad_alloc
-    auto tans = new(std::nothrow) ll[n - 1];
+    auto tans = new(std::nothrow) double[n - 1];
     if (tans == nullptr) {
         return std::make_tuple(0, 0, errors::NewError("bad alloc (tans)"));
     }
 
     // https://medium.com/software-design/why-software-developers-should-care-about-cpu-caches-8da04355bb8a#:~:text=A%20cache%20line%20is%20the,region%20is%20read%20or%20written.
     // https://en.cppreference.com/w/c/memory/aligned_alloc
-    auto etan = (ll *) aligned_alloc(64, (sizeof(double)) * (n + 1));
+    auto etan = (double *) aligned_alloc(64, (sizeof(double)) * (n + 1));
     if (etan == nullptr) {
         return std::make_tuple(0, 0, errors::NewError("bad alloc (etz tans)"));
     }
@@ -36,10 +36,7 @@ std::tuple<ll, ll, err> Hard::Run(int points, int seed) const {
 
     for (int i = 0; i < n - 1; ++i) {
         auto vec = p[i + 1] - p[0];
-        if (abs(vec.y) >= abs(vec.x)) {
-            return std::make_tuple(0, 0, errors::NewError("|tg| > 1, need an affine transformation"));
-        }
-        tans[i] = (ll) ((double) vec.y / vec.x * 1e18);
+        tans[i] = (double) vec.y / vec.x;
     }
 
     int it = 0;
@@ -77,7 +74,7 @@ std::tuple<ll, ll, err> Hard::Run(int points, int seed) const {
 
             bool inside = false;
 
-            ll t = (ll) (((double) vec.y / vec.x + 1e-16) * 1e18);
+            double t = (double) vec.y / vec.x + 1e-16;
 
             int k = 1;
             // 1 cache line -> prefetch
