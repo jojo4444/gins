@@ -51,11 +51,11 @@ TEST(LoadDouble, loadu) {
     int len = 8 * 4;
     auto *ptr = (double *) malloc(len * (sizeof(double)));
 
+    ASSERT_NE(ptr, nullptr);
+
     for (int i = 0; i < len; ++i) {
         ptr[i] = i;
     }
-
-    ASSERT_NE(ptr, nullptr);
 
     for (int i = 0; i < len; i += 4) {
         __m256d x = _mm256_loadu_pd(ptr + i);
