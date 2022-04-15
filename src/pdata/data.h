@@ -52,8 +52,9 @@ public:
     std::tuple<Point<>, bool> GetPt(int id);
 
 private:
+    /// https://en.wikipedia.org/wiki/Mersenne_Twister
     std::mt19937 rnd[CNT_BATCH];
-    int cnt[CNT_BATCH]{};
+    int cnt[CNT_BATCH];
 };
 
 #endif //GINS_DATA_H

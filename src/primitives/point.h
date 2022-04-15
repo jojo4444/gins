@@ -19,6 +19,7 @@ PI = 4 * atan(1)
 1. Critical point
 2. https://en.wikipedia.org/wiki/Taylor_series
 3. https://en.wikipedia.org/wiki/Remez_algorithm
+4. https://en.wikipedia.org/wiki/Floating-point_unit
 
 fast cos(x):
 cos(x) = 2 * cos^2(x * 0.5) - 1

@@ -42,9 +42,6 @@ std::tuple<ll, ll, err> Medium::Run(int points, int seed) const {
                 continue;
             }
 
-
-            bool inside = false;
-
             int l = 1, r = n; /// [l; r)
             while (l + 1 < r) {
                 int m = (l + r) >> 1;
@@ -55,7 +52,7 @@ std::tuple<ll, ll, err> Medium::Run(int points, int seed) const {
                 }
             }
 
-            inside = InTriangle(p[0], p[l], p[l + 1], pt);
+            bool inside = InTriangle(p[0], p[l], p[l + 1], pt);
             c += inside;
 
             s = (s * BASE_MOD + inside) % CHECK_MOD;

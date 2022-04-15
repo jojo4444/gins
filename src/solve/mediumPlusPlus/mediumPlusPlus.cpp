@@ -73,6 +73,8 @@ std::tuple<ll, ll, err> MediumPlusPlus::Run(int points, int seed) const {
 
             double t = (double) vec.y / vec.x + 1e-16;
 
+            /// if-else - slow / predication - fast
+            /// https://en.wikipedia.org/wiki/Branch_predictor#:~:text=In%20computer%20architecture%2C%20a%20branch,flow%20in%20the%20instruction%20pipeline.
             int k = 1;
             while (k <= n - 1) {
                 k = 2 * k + (etan[k] < t);

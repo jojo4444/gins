@@ -23,6 +23,7 @@ public:
     [[nodiscard]] virtual std::tuple<ll, ll, err> Run(int points, int seed) const = 0;
 };
 
+/// checksum, inside, time, error
 std::tuple<ll, ll, ld, err> calculateAlgo(const Algo &a, int points, int seed);
 
 template<typename T>
